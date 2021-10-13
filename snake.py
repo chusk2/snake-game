@@ -33,13 +33,14 @@ for i in range(snake_size):
 
 
 def move_snake():
-	while True:
-		scr.update()
-		for i in snake:
-			i.forward(20)
-		time.sleep(0.1)
+	for i in snake:
+		i.forward(20)
+	scr.update()
+	time.sleep(0.1)
+
 
 def move_vertical(direction):
+
 	# can move upwards only if moving horizontally
 	if direction in ['E', 'W']:
 
@@ -47,31 +48,32 @@ def move_vertical(direction):
 		head_pos_x = head.position()[0]
 
 		# set turning direction of snake head
-		if direction == 'E':
-			head.setheading(90)
-		elif direction == 'W':
-			head.setheading(0)
-		head.forward(20)
+		# if direction == 'E':
+		# 	head.setheading(90)
+		# elif direction == 'W':
+		# 	head.setheading(0)
+		# head.forward(20)
 
 		# move rest of snake segments
 		while snake[-1].position != head.pos:
-			for i in snake[1:]:
+			for i in snake:
 
 				# check if segment is at turning point
-				if i.position()[0] != head_pos_x:
-					i.forward(20)
-
-				# turn segment direction at turning point
-				else:
-
+				if i.position()[0] == head_pos_x:
+					# turn direction
 					if direction == 'E':
 						i.setheading(90)
 					elif direction == 'W':
 						i.setheading(0)
+				# move forward once it has turned or not
+				i.forward(20)
+			scr.update()
+			time.sleep(0.1)
 
-					i.forward(20)
 
 
-move_snake()
+for i in range(10):
+	move_snake()
+move_vertical(orientation)
 
 scr.exitonclick()
