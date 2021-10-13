@@ -22,14 +22,7 @@ snake_size = 3
 
 snake = [Turtle() for i in range(snake_size)]
 snake_positions = []
-orientation = 'E'
-
-for i in range(snake_size):
-	snake[i].shape('square')
-	snake[i].color('white')
-	snake[i].penup()
-	# move each block 20px backwards
-	snake[i].goto(-20*i, 0)
+direction = 'E'
 
 
 def move_snake():
@@ -39,27 +32,17 @@ def move_snake():
 	time.sleep(0.1)
 
 
-def move_vertical(direction):
+def move_up():
 
 	# can move upwards only if moving horizontally
 	if direction in ['E', 'W']:
 
-		head = snake[0]
-		head_pos_x = head.position()[0]
+		head_posx = snake[0].position()[0]
 
-		# set turning direction of snake head
-		# if direction == 'E':
-		# 	head.setheading(90)
-		# elif direction == 'W':
-		# 	head.setheading(0)
-		# head.forward(20)
-
-		# move rest of snake segments
-		while snake[-1].position != head.pos:
+		for step in range(len(snake)):
 			for i in snake:
-
 				# check if segment is at turning point
-				if i.position()[0] == head_pos_x:
+				if i.position()[0] == head_posx:
 					# turn direction
 					if direction == 'E':
 						i.setheading(90)
@@ -67,13 +50,47 @@ def move_vertical(direction):
 						i.setheading(0)
 				# move forward once it has turned or not
 				i.forward(20)
+
 			scr.update()
 			time.sleep(0.1)
 
 
+def move_down():
 
-for i in range(10):
+	# can move upwards only if moving horizontally
+	if direction in ['E', 'W']:
+
+		head_posx = snake[0].position()[0]
+
+		for step in range(len(snake)):
+			for i in snake:
+				# check if segment is at turning point
+				if i.position()[0] == head_posx:
+					# turn direction
+					if direction == 'E':
+						i.setheading(270)
+					elif direction == 'W':
+						i.setheading(180)
+				# move forward once it has turned or not
+				i.forward(20)
+			scr.update()
+			time.sleep(0.1)
+
+
+for i in range(snake_size):
+	snake[i].shape('square')
+	snake[i].color('white')
+	snake[i].penup()
+	# move each block 20px backwards
+	snake[i].goto(-20*i, 0)
+
+scr.onkeypress(move_up, 'Up')
+scr.onkeypress(move_down, 'Down')
+scr.listen()
+
+
+while True:
 	move_snake()
-move_vertical(orientation)
+
 
 scr.exitonclick()
