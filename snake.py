@@ -61,7 +61,7 @@ def move_snake():
 				i.goto(posx, min_posy)
 			# return to right margin of canvas
 			elif direction == 270 and posy == min_posy:  # going downwards
-				i.goto(posx, max_posyposy)
+				i.goto(posx, max_posy)
 			# limits not reached, just move on
 			else:
 				i.forward(20)
@@ -73,7 +73,8 @@ def move_snake():
 def move_up():
 
 	# can move upwards only if moving horizontally
-	if direction in ['E', 'W']:
+	direction = snake[0].heading()
+	if direction in [0, 180]:
 
 		head_posx = snake[0].position()[0]
 
@@ -82,9 +83,9 @@ def move_up():
 				# check if segment is at turning point
 				if i.position()[0] == head_posx:
 					# turn direction
-					if direction == 'E':
+					if direction == 0:
 						i.setheading(90)
-					elif direction == 'W':
+					elif direction == 180:
 						i.setheading(0)
 				# move forward once it has turned or not
 				i.forward(20)
@@ -96,7 +97,8 @@ def move_up():
 def move_down():
 
 	# can move upwards only if moving horizontally
-	if direction in ['E', 'W']:
+	direction = snake[0].heading()
+	if direction in [0, 180]:
 
 		head_posx = snake[0].position()[0]
 
@@ -105,9 +107,9 @@ def move_down():
 				# check if segment is at turning point
 				if i.position()[0] == head_posx:
 					# turn direction
-					if direction == 'E':
+					if direction == 0:
 						i.setheading(270)
-					elif direction == 'W':
+					elif direction == 180:
 						i.setheading(180)
 				# move forward once it has turned or not
 				i.forward(20)
