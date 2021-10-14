@@ -2,7 +2,7 @@ import time
 from turtle import Turtle, Screen
 
 scr = Screen()
-scr.setup(height=600, width=600)
+scr.setup(height=1000, width=1000)
 scr.bgcolor('black')
 scr.title('Snake Game')
 scr.tracer(0)
@@ -21,14 +21,12 @@ snake_size = 3
 
 
 snake = [Turtle() for i in range(snake_size)]
-snake_positions = []
 
+# Dimensions of canvas
 half_width = scr.screensize()[0] / 2
 half_height = scr.screensize()[1] / 2
-
 max_posx = half_width - 20
 min_posx = - half_width + 20
-
 max_posy = half_height -20
 min_posy = - half_height +20
 
@@ -149,6 +147,64 @@ def move_down():
 			scr.update()
 			time.sleep(0.1)
 
+
+def move_left():
+	# can move upwards only if moving vertically
+	head_posy = snake[0].position()[1]
+	tail_posy = snake[-1].position()[1]
+	head_pos = snake[0].position()
+	turn, direc = '', ''
+	if head_posy != tail_posy:  # moving vertical
+		# turn direction
+		if head_posy > tail_posy:  # moving up
+			direc = 'up'
+			print(direc)
+		elif head_posy < tail_posy:  # moving down
+			direc = 'down'
+			print(direc)
+		required_steps = len(snake) - 1
+		for step in range(required_steps):
+			for i in snake:
+				# check if segment is at turning point
+				if i.position() == head_pos:
+					turn_orientation(i, direc, 'left')
+				# move forward once it has turned or not
+				i.forward(20)
+				# last segment of snake must be rotated as last step
+				if i == snake[-1] and step == (required_steps - 1):
+					turn_orientation(i, direc, 'left')
+			scr.update()
+			time.sleep(0.1)
+
+
+def move_right():
+	# can move upwards only if moving vertically
+	head_posy = snake[0].position()[1]
+	tail_posy = snake[-1].position()[1]
+	head_pos = snake[0].position()
+	turn, direc = '', ''
+	if head_posy != tail_posy:  # moving vertical
+		# turn direction
+		if head_posy > tail_posy:  # moving up
+			direc = 'up'
+			print(direc)
+		elif head_posy < tail_posy:  # moving down
+			direc = 'down'
+			print(direc)
+		required_steps = len(snake) - 1
+		for step in range(required_steps):
+			for i in snake:
+				# check if segment is at turning point
+				if i.position() == head_pos:
+					turn_orientation(i, direc, 'right')
+				# move forward once it has turned or not
+				i.forward(20)
+				# last segment of snake must be rotated as last step
+				if i == snake[-1] and step == (required_steps - 1):
+					turn_orientation(i, direc, 'right')
+			scr.update()
+			time.sleep(0.1)
+
 # create snake
 # snake_colours = ['blue','red','orange']
 
@@ -165,8 +221,8 @@ snake[0].color('blue')
 # Event listeners
 scr.onkeypress(move_up, 'Up')
 scr.onkeypress(move_down, 'Down')
-# scr.onkeypress(move_up, 'Up')
-# scr.onkeypress(move_down, 'Down')
+scr.onkeypress(move_left, 'Left')
+scr.onkeypress(move_right, 'Right')
 scr.listen()
 
 
