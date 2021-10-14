@@ -70,44 +70,43 @@ def move_snake():
 	time.sleep(0.1)
 
 
-def turn_orientation(piece, direction, turn):
+def turn_orientation(segment, direction, turn):
 	if direction == 'left':
 		if turn == 'up':
-			piece.right(90)
+			segment.right(90)
 		elif turn == 'down':
-			piece.left(90)
+			segment.left(90)
 	elif direction == 'right':
 		if turn == 'up':
-			piece.left(90)
+			segment.left(90)
 		elif turn == 'down':
-			piece.right(90)
+			segment.right(90)
 	elif direction == 'up':
 		if turn == 'left':
-			piece.left(90)
+			segment.left(90)
 		elif turn == 'right':
-			piece.right(90)
+			segment.right(90)
 	elif direction == 'down':
 		if turn == 'left':
-			piece.right(90)
+			segment.right(90)
 		elif turn == 'right':
-			piece.left(90)
+			segment.left(90)
+
 
 def move_up():
-
 	# can move upwards only if moving horizontally
-
 	head_posx = snake[0].position()[0]
 	tail_posx = snake[-1].position()[0]
 	head_pos = snake[0].position()
-	print(head_posx)
-	print(tail_posx)
-	turn = ''
+	turn, direc = '', ''
 	if head_posx != tail_posx:  # moving horizontal
 		# turn direction
 		if head_posx < tail_posx:  # moving left
-			direc = 'right'
-		elif head_posx > tail_posx:  # moving right
 			direc = 'left'
+			print(direc)
+		elif head_posx > tail_posx:  # moving right
+			direc = 'right'
+			print(direc)
 		required_steps = len(snake) - 1
 		for step in range(required_steps):
 			for i in snake:
@@ -118,42 +117,50 @@ def move_up():
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
 					turn_orientation(i, direc, 'up')
-
 			scr.update()
 			time.sleep(0.1)
 
 
 def move_down():
 	# can move upwards only if moving horizontally
-	head = snake[0]
 	head_posx = snake[0].position()[0]
-	angle = int(head.towards(0, 0))
-	if angle in [0, 180]:  # moving horizontal
-
-		for step in range(len(snake)):
+	tail_posx = snake[-1].position()[0]
+	head_pos = snake[0].position()
+	turn, direc = '', ''
+	if head_posx != tail_posx:  # moving horizontal
+		# turn direction
+		if head_posx < tail_posx:  # moving left
+			direc = 'left'
+			print(direc)
+		elif head_posx > tail_posx:  # moving right
+			direc = 'right'
+			print(direc)
+		required_steps = len(snake) - 1
+		for step in range(required_steps):
 			for i in snake:
 				# check if segment is at turning point
-				if i.position()[0] == head_posx:
-					# turn direction
-					if angle == 0:  # moving right
-						i.left(90)
-					elif angle == 180:  # moving left
-						i.right(0)
+				if i.position() == head_pos:
+					turn_orientation(i, direc, 'down')
 				# move forward once it has turned or not
 				i.forward(20)
-
+				# last segment of snake must be rotated as last step
+				if i == snake[-1] and step == (required_steps - 1):
+					turn_orientation(i, direc, 'down')
 			scr.update()
 			time.sleep(0.1)
 
 # create snake
-#snake_colours = ['blue','red','orange']
-for piece in range(snake_size):
-	snake[piece].shape('square')
+# snake_colours = ['blue','red','orange']
+
+
+for k in range(snake_size):
+	snake[k].shape('square')
 	#snake[i].color(snake_colours[i])
-	snake[piece].color('green')
-	snake[piece].penup()
+	snake[k].color('green')
+	snake[k].penup()
 	# move each block 20px backwards
-	snake[piece].goto(-20 * piece, 0)
+	snake[k].goto(-20 * k, 0)
+snake[0].color('blue')
 
 # Event listeners
 scr.onkeypress(move_up, 'Up')
