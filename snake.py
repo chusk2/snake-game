@@ -2,33 +2,30 @@ import time
 from turtle import Turtle, Screen
 
 scr = Screen()
-scr.setup(height=1000, width=1000)
+scr.setup(height=800, width=800)
 scr.bgcolor('black')
 scr.title('Snake Game')
 scr.tracer(0)
 
 # create three segments of turtle
-snake_size = 3
-
-# class Block(Turtle):
-# 	def __init__(self):
-# 		self.shape('square')
-# 		self.color('white')
-# 		self.penup()
-# 		self.posx = 0
-# 		self.posy = 0
-# 		self.pos = [self.posx, self.posy]
-
+snake_size = 4
 
 snake = [Turtle() for i in range(snake_size)]
 
 # Dimensions of canvas
-half_width = scr.screensize()[0] / 2
-half_height = scr.screensize()[1] / 2
-max_posx = half_width - 20
-min_posx = - half_width + 20
-max_posy = half_height -20
-min_posy = - half_height +20
+width = scr.screensize()[0]
+height = scr.screensize()[1]
+max_posx = width - 20
+min_posx = - width + 20
+max_posy = height - 20
+min_posy = - height + 20
+
+x = Turtle()
+x.pencolor('blue')
+x.goto(-width, -height)
+x.goto(-width, height)
+
+#x.hideturtle()
 
 # West  = setheading(0)
 # East  = setheading(180)
@@ -49,7 +46,7 @@ def get_orientation(snake):
 	if head_x == tail_x:
 		if head_y > tail_y:
 			y_axis = +1
-		elif head < tail_y:
+		elif head_y < tail_y:
 			y_axis = -1
 		orientation = [0, y_axis]
 		return orientation
