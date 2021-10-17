@@ -13,8 +13,8 @@ snake_size = 4
 snake = [Turtle() for i in range(snake_size)]
 
 # Dimensions of canvas
-width = 250
-height = 250
+width = 260
+height = 260
 # width = scr.screensize()[0]
 # height = scr.screensize()[1]
 max_posx = width - 20
@@ -54,24 +54,20 @@ def get_orientation(snk):
 	y_axis = 0
 	# moving vertical
 	if head_x == prehead_x:
-		print('head x = prehead x')
+
 		if head_y > prehead_y:
-			print('head y > prehead y')
 			y_axis = +1
 			return [x_axis, y_axis]
 		elif head_y < prehead_y:
-			print('head y < prehead y')
 			y_axis = -1
 			return [x_axis, y_axis]
 	# moving horizontal
 	elif head_y == prehead_y:
-		print('head y = prehead y')
+
 		if head_x > prehead_x:
-			print('head x > prehead x')
 			x_axis = +1
 			return [x_axis, y_axis]
 		elif head_x < prehead_x:
-			print('head x = prehead x')
 			x_axis = -1
 			return [x_axis, y_axis]
 	else:
@@ -87,32 +83,31 @@ def move_to_margin(block, side):
 
 
 def move_snake():
-	direction = get_orientation(snake)
+	# direction = get_orientation(snake)
 	x_direc = direction[0]
 	y_direc = direction[1]
-	print(f'Head: {snake[0].position()}, Tail: {snake[1].position()}')
 	for i in snake:
 		posx = i.position()[0]
 		posy = i.position()[1]
 
 		if y_direc == 0:  # moving horizontal
 			# return to left margin of canvas
-			if x_direc == +1 and posx == max_posx:  # going rightwards
+			if x_direc == +1 and posx >= max_posx:  # going rightwards
 				move_to_margin(i, (-width, posy))
 				continue
 			# return to right margin of canvas
-			elif x_direc == -1 and posx == min_posx:  # going leftwards
+			elif x_direc == -1 and posx <= min_posx:  # going leftwards
 				move_to_margin(i, (+width, posy))
 				continue
 			# limits not reached, just move on
 
 		elif x_direc == 0:  # moving vertical
 			# return to bottom margin of canvas
-			if y_direc == +1 and posy == max_posy:  # going upwards
+			if y_direc == +1 and posy >= max_posy:  # going upwards
 				move_to_margin(i, (posx, -height))
 				continue
 			# return to right margin of canvas
-			elif y_direc == -1 and posy == min_posy:  # going downwards
+			elif y_direc == -1 and posy <= min_posy:  # going downwards
 				move_to_margin(i, (posx, +height))
 				continue
 			# limits not reached, just move on
@@ -120,55 +115,80 @@ def move_snake():
 		i.forward(20)
 
 	scr.update()
+	print(f'X orientation: {x_direc}, Y orientation: {y_direc}')
 	for i in snake:
 		print(i.position(), end=' ')
 	print('\n')
 	time.sleep(0.1)
 
+# start moving horizontal rightwards
+# x_direc = +1
+# y_direc = 0
 
-def turn_segment(segment, direction, key):
+
+direction = [+1, 0]
+
+
+def turn_segment(segment, direct, key):
 	# left: 	x_direct + -1
 	# right:	x_direct = +1
 	# up:		y_direct = +1
 	# down:		y_direct + -1
 
-	x_direct = direction[0]
-	y_direct = direction[1]
+	x_direct = direct[0]
+	y_direct = direct[1]
 
 	# moving horizontal
 	if y_direct == 0:
 		# moving left
-		if x_direct == -1:  # left
+		if x_direct == -1:  # leftwards
 			if key == 'up':
 				segment.right(90)
+				if segment == snake[0]:
+					direct = [0, +1]
 			elif key == 'down':
 				segment.left(90)
+				if segment == snake[0]:
+					direct = [0, -1]
 		# moving right
 		elif x_direct == +1:  # right
 			if key == 'up':
 				segment.left(90)
+				if segment == snake[0]:
+					direct = [0, +1]
 			elif key == 'down':
 				segment.right(90)
+				if segment == snake[0]:
+					direct = [0, -1]
 	# moving vertical
 	elif x_direct == 0:
 		# moving up
 		if y_direct == 1:  # up
 			if key == 'left':
 				segment.left(90)
+				if segment == snake[0]:
+					direct = [-1, 0]
 			elif key == 'right':
 				segment.right(90)
+				if segment == snake[0]:
+					direct = [+1, 0]
 		# moving down
 		elif y_direct == -1:  # down
 			if key == 'left':
 				segment.right(90)
+				if segment == snake[0]:
+					direct = [-1, 0]
 			elif key == 'right':
 				segment.left(90)
+				if segment == snake[0]:
+					direct = [+1, 0]
+	return direct
 
 
 def move_up():
 	# can move upwards only if moving horizontally
-	direc = get_orientation(snake)
-	y_direc = direc[1]
+	#direc = get_orientation(snake)
+	y_direc = direction[1]
 	head_pos = snake[0].position()
 	if y_direc == 0:  # moving horizontal
 
@@ -177,11 +197,11 @@ def move_up():
 			for i in snake:
 				# check if segment is at turning point
 				if i.position() == head_pos:
-					turn_segment(i, direc, 'up')
+					direction = turn_segment(i, direc, 'up')
 				# move forward once it has turned or not
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
-					turn_segment(i, direc, 'up')
+					direction = turn_segment(i, direc, 'up')
 			scr.update()
 			time.sleep(0.1)
 
@@ -197,11 +217,11 @@ def move_down():
 			for i in snake:
 				# check if segment is at turning point
 				if i.position() == head_pos:
-					turn_segment(i, direc, 'down')
+					direction = turn_segment(i, direc, 'down')
 				# move forward once it has turned or not
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
-					turn_segment(i, direc, 'down')
+					direction = turn_segment(i, direc, 'down')
 			scr.update()
 			time.sleep(0.1)
 
@@ -218,11 +238,11 @@ def move_left():
 			for i in snake:
 				# check if segment is at turning point
 				if i.position() == head_pos:
-					turn_segment(i, direc, 'left')
+					direction  = turn_segment(i, direc, 'left')
 				# move forward once it has turned or not
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
-					turn_segment(i, direc, 'left')
+					direction = turn_segment(i, direc, 'left')
 			scr.update()
 			time.sleep(0.1) 
 
@@ -239,11 +259,11 @@ def move_right():
 			for i in snake:
 				# check if segment is at turning point
 				if i.position() == head_pos:
-					turn_segment(i, direc, 'right')
+					direction = turn_segment(i, direc, 'right')
 				# move forward once it has turned or not
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
-					turn_segment(i, direc, 'right')
+					direction = turn_segment(i, direc, 'right')
 			scr.update()
 			time.sleep(0.1)
 
