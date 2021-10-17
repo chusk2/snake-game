@@ -13,11 +13,13 @@ snake_size = 4
 snake = [Turtle() for i in range(snake_size)]
 
 # Dimensions of canvas
-width = 250
-height = 250
+width = 260
+height = 260
+# size must be multiple of 20 in order to be able to move back to margin
 # width = scr.screensize()[0]
 # height = scr.screensize()[1]
 max_posx = width - 20
+print(max_posx)
 min_posx = - width + 20
 max_posy = height - 20
 min_posy = - height + 20
@@ -54,24 +56,24 @@ def get_orientation(snk):
 	y_axis = 0
 	# moving vertical
 	if head_x == prehead_x:
-		print('head x = prehead x')
+		# print('head x = prehead x')
 		if head_y > prehead_y:
-			print('head y > prehead y')
+			# print('head y > prehead y')
 			y_axis = +1
 			return [x_axis, y_axis]
 		elif head_y < prehead_y:
-			print('head y < prehead y')
+			# print('head y < prehead y')
 			y_axis = -1
 			return [x_axis, y_axis]
 	# moving horizontal
 	elif head_y == prehead_y:
-		print('head y = prehead y')
+		# print('head y = prehead y')
 		if head_x > prehead_x:
-			print('head x > prehead x')
+			# print('head x > prehead x')
 			x_axis = +1
 			return [x_axis, y_axis]
 		elif head_x < prehead_x:
-			print('head x = prehead x')
+			# print('head x = prehead x')
 			x_axis = -1
 			return [x_axis, y_axis]
 	else:
@@ -261,13 +263,13 @@ scr.onkeypress(move_up, 'Up')
 scr.onkeypress(move_down, 'Down')
 scr.onkeypress(move_left, 'Left')
 scr.onkeypress(move_right, 'Right')
-scr.onkeypress(move_snake, 'space')
+#scr.onkeypress(move_snake, 'space')
 
 scr.listen()
 
 
-# while True:
-# 	move_snake()
+while True:
+	move_snake()
 
 
 scr.exitonclick()
