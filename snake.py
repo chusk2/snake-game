@@ -69,22 +69,7 @@ class Segment(Turtle):
 		self.speed(3)
 		self.showturtle()
 		
-	def turn(self, key):
-		# HLWU: moving horizontally LEFTWARDS and then turn UP
-		# HLWU: moving horizontally LEFTWARDS and then turn DOWN
-		# HRWU: moving horizontally RIGHTWARDS and then turn UP
-		# HRWD: moving horizontally RIGHTWARDS and then turn DOWN
-
-		# VUWL: moving vertically UPWARDS and then turn LEFT
-		# VUWR: moving vertically UPWARDS and then turn RIGHT
-		# VDWL: moving vertically DOWNWARDS and then turn LEFT
-		# VDWR: moving vertically DOWNWARDS and then turn RIGHT
-
-		# movements = {'HLWU': ['R', (0, -1)], 'HLWD': ['L', (0, -1)],
-		# 			'HRWU': ['L', (0, 1)], 'HRWD': ['R', (0, 1)],
-		# 			'VUWL': ['L', (-1, 0)], 'VUWR': ['R', (1, 0)],
-		# 			'VDWL': ['R', (-1, 0)],  'VDWR': ['L', (1, 0)],
-		# 			}
+	def turn_segment(self, key):
 
 		# moving horizontal
 		if self.y_direct == 0:
@@ -107,7 +92,7 @@ class Segment(Turtle):
 				elif key == 'down':
 					self.right(90)
 					self.x_direct = 0
-					self.y_direct = +1
+					self.y_direct = -1
 
 		# moving vertical
 		elif self.x_direct == 0:
@@ -115,14 +100,12 @@ class Segment(Turtle):
 			if self.y_direct == 1:  # up
 				if key == 'left':
 					self.left(90)
-					if self == snake[0]:
-						self.x_direct = -1
-						self.y_direct = 0
+					self.x_direct = -1
+					self.y_direct = 0
 				elif key == 'right':
 					self.right(90)
-					if self == snake[0]:
-						self.x_direct = +1
-						self.y_direct = 0
+					self.x_direct = +1
+					self.y_direct = 0
 			# moving down
 			elif self.y_direct == -1:  # down
 				if key == 'left':
@@ -134,9 +117,8 @@ class Segment(Turtle):
 					self.x_direct = 1
 					self.y_direct = 0
 
-# create three segments of turtle
 
-
+# create segments of turtle
 snake_size = 4
 snake = []
 for i in range(snake_size):
@@ -148,13 +130,13 @@ def move_snake():
 	for i in snake:
 		posx = i.position()[0]
 		posy = i.position()[1]
-		if posx == max_posx:  # crossing the right side
+		if posx >= max_posx:  # crossing the right side
 			i.cross_margin('right')
-		elif posx == min_posx:  # crossing the left side
+		elif posx <= min_posx:  # crossing the left side
 			i.cross_margin('left')
-		elif posy == max_posy:  # crossing the upper side
+		elif posy >= max_posy:  # crossing the upper side
 			i.cross_margin('upper')
-		elif posy == min_posy:  # crossing the bottom side
+		elif posy <= min_posy:  # crossing the bottom side
 			i.cross_margin('bottom')
 		i.forward(20)
 
@@ -167,105 +149,40 @@ def move_snake():
 
 
 def turn_snake(key_pressed):
-	# can move upwards only if moving horizontally
-	# direc = get_orientation(snake)
+
+	head_pos = snake[0].position()
+	# check if
+	def turn(k):
+		required_steps = len(snake) - 1
+		for step in range(required_steps):
+			for i in snake:
+				# check if segment is at turning point
+				if i.position() == head_pos:
+					i.turn_segment(k)
+				# move forward once it has turned or not
+				i.forward(20)
+				if i == snake[-1] and step == (required_steps - 1):
+					i.turn_segment(k)
+			scr.update()
+			time.sleep(0.1)
+
+	# check if required turn is possible
 	heading_x = snake[0].x_direct
 	heading_y = snake[0].y_direct
-	head_pos = snake[0].position()
+	# moving horizontally
+	if heading_y == 0 and key_pressed in ['up', 'down']:
+		turn(key_pressed)
+	# moving horizontally
+	elif heading_x == 0 and key_pressed in ['left', 'right']:
+		turn(key_pressed)
 
-	required_steps = len(snake) - 1
-	for step in range(required_steps):
-		for i in snake:
-			# check if segment is at turning point
-			if i.position() == head_pos:
-				i.turn(key_pressed)
-			# move forward once it has turned or not
-			i.forward(20)
-			if i == snake[-1] and step == (required_steps - 1):
-				i.turn(key_pressed)
-		scr.update()
-		time.sleep(0.1)
-
-
-# def move_down():
-# 	# can move upwards only if moving horizontally
-# 	direc = get_orientation(snake)
-# 	y_direc = direc[1]
-# 	head_pos = snake[0].position()
-# 	if y_direc == 0:  # moving horizontal
-# 		required_steps = len(snake) - 1
-# 		for step in range(required_steps):
-# 			for i in snake:
-# 				# check if segment is at turning point
-# 				if i.position() == head_pos:
-# 					direction = turn_segment(i, direc, 'down')
-# 				# move forward once it has turned or not
-# 				i.forward(20)
-# 				if i == snake[-1] and step == (required_steps - 1):
-# 					direction = turn_segment(i, direc, 'down')
-# 			scr.update()
-# 			time.sleep(0.1)
-#
-#
-# def move_left():
-# 	# can move upwards only if moving vertically
-# 	direc = get_orientation(snake)
-# 	x_direc = direc[0]
-# 	head_pos = snake[0].position()
-# 	if x_direc == 0:  # moving vertical
-#
-# 		required_steps = len(snake) - 1
-# 		for step in range(required_steps):
-# 			for i in snake:
-# 				# check if segment is at turning point
-# 				if i.position() == head_pos:
-# 					direction = turn_segment(i, direc, 'left')
-# 				# move forward once it has turned or not
-# 				i.forward(20)
-# 				if i == snake[-1] and step == (required_steps - 1):
-# 					direction = turn_segment(i, direc, 'left')
-# 			scr.update()
-# 			time.sleep(0.1)
-#
-#
-# def move_right():
-# 	# can move upwards only if moving vertically
-# 	direc = get_orientation(snake)
-# 	x_direc = direc[0]
-# 	head_pos = snake[0].position()
-# 	if x_direc == 0:  # moving vertical
-#
-# 		required_steps = len(snake) - 1
-# 		for step in range(required_steps):
-# 			for i in snake:
-# 				# check if segment is at turning point
-# 				if i.position() == head_pos:
-# 					direction = turn_segment(i, direc, 'right')
-# 				# move forward once it has turned or not
-# 				i.forward(20)
-# 				if i == snake[-1] and step == (required_steps - 1):
-# 					direction = turn_segment(i, direc, 'right')
-# 			scr.update()
-# 			time.sleep(0.1)
-
-
-# for k in range(snake_size):
-# 	snake[k].shape('square')
-# 	snake[k].color('green')
-# 	snake[k].penup()
-# 	# move each block 20px backwards
-# 	snake[k].goto(-20 * k, 0)
-# 	snake[0].color('blue')
 
 # Event listeners
 scr.onkeypress(lambda: turn_snake('up'), 'Up')
 scr.onkeypress(lambda: turn_snake('down'), 'Down')
 scr.onkeypress(lambda: turn_snake('left'), 'Left')
 scr.onkeypress(lambda: turn_snake('right'), 'Right')
-# scr.onkeypress(move_down, 'Down')
-# scr.onkeypress(move_left, 'Left')
-# scr.onkeypress(move_right, 'Right')
-# scr.onkeypress(move_snake, 'space')
+scr.onkeypress(move_snake, 'space')
 
 scr.listen()
 
