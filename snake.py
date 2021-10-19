@@ -69,8 +69,8 @@ class Segment(Turtle):
 		self.speed(3)
 		self.showturtle()
 		
-	def turn_segment(self, key):
-
+	def change_segment_orientation(self, key):
+		""" changes the orientation of the segment"""
 		# moving horizontal
 		if self.y_direct == 0:
 			# moving left
@@ -147,28 +147,38 @@ def move_snake():
 	print('\n')
 	time.sleep(0.1)
 
-
-def turn_snake(key_pressed):
+# TODO implement use of turning points properties properly
+turning_points = []  # list with coordinates of turning points of the snake
+head_pos = snake[0].position()
+# turning point: list with: [head position, head x direction, head y direction]
+turning_points.append([head_pos, snake[0].x_direct, snake[0].y_direct, key_pressed])
+turning = True
+def turn_snake(turning_properties):
 
 	head_pos = snake[0].position()
-	# check if
-	def turn(k):
+	# turning point: list with: [head position, head x direction, head y direction]
+	turning_points.append([head_pos, snake[0].x_direct, snake[0].y_direct, key_pressed])
+	turning = True
+
+	def turn():
+		head_position = turning_points[0]  # position of head when asked to turn
+		new_heading = turning_points[3]  # the new heading of the turn
 		required_steps = len(snake) - 1
 		for step in range(required_steps):
 			for i in snake:
 				# check if segment is at turning point
-				if i.position() == head_pos:
-					i.turn_segment(k)
+				if i.position() == head_position:
+					i.change_segment_orientation(new_heading)
 				# move forward once it has turned or not
 				i.forward(20)
 				if i == snake[-1] and step == (required_steps - 1):
-					i.turn_segment(k)
+					i.change_segment_orientation(new_heading)
 			scr.update()
 			time.sleep(0.1)
 
 	# check if required turn is possible
-	heading_x = snake[0].x_direct
-	heading_y = snake[0].y_direct
+	heading_x = turning_points[1]
+	heading_y = turning_points[2]
 	# moving horizontally
 	if heading_y == 0 and key_pressed in ['up', 'down']:
 		turn(key_pressed)
