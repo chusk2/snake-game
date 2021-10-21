@@ -38,22 +38,21 @@ for i in range(number_turtles+1):  # +1 to fill the borders of grid
 
 scr.update()
 
-# Event listeners
-scr.onkeypress(lambda k='up': Snake.turn_snake(k), 'Up')
-scr.onkeypress(lambda: Snake.turn_snake('down'), 'Down')
-scr.onkeypress(lambda: Snake.turn_snake('left'), 'Left')
-scr.onkeypress(lambda: Snake.turn_snake('right'), 'Right')
-scr.onkeypress(Snake.move, 'space')
-
-scr.listen()
-
 # create a snake of size 3 and restrain its movement
 # to the margins of the canvas
 snk = Snake(3, margins)
+
+# Event listeners
+scr.onkeypress(lambda: snk.turn_snake('up'), 'Up')
+scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
+scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
+scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
+#scr.onkeypress(snk.move, 'space')
+scr.listen()
+
 while True:
     snk.move()
     scr.update()
     time.sleep(0.1)
+    scr.exitonclick()
 
-
-scr.exitonclick()
