@@ -4,8 +4,8 @@ from turtle import Turtle
 class Segment(Turtle):
     def __init__(self, posx, posy):
         super().__init__()
-        self.pencolor('blue')
-        self.shape('square')
+        self.pencolor('green')
+        self.shape('circle')
         self.x_direct = +1
         self.y_direct = 0
         self.posx = posx
@@ -90,7 +90,9 @@ class Segment(Turtle):
 
     def move_segment(self):
         # if there are rotations still to be carried out
+
         if self.turning_points:
+            print(self.turning_points)
             # turning point: [head position, direction]
             first_turn = self.turning_points[0]
             head_position = first_turn[0]

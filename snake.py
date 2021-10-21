@@ -13,10 +13,11 @@ class Snake:
 	def move(self):  # move the whole snake
 
 		for i in self.pieces:
+			print(i.position(), end='\\')
 			# margins = [min_x, min_y, max_x, max_y]
 			i.check_crossing_margin(self.margins)
 			i.move_segment()
-
+		print('\n')
 		# print(f'X orientation: {i.x_direct}, Y orientation: {i.y_direct}')
 		# for i in snake:
 		# 	print(i.position(), end=' ')
@@ -37,7 +38,7 @@ class Snake:
 			# turning point: [head position, direction]
 			# add the turning point to list of turning points
 			# to be carried out by the segment
-			for i in self.pieces:
+			for i in self.pieces:  # every segment gets a rotate order
 				i.turning_points.append([head_position, key])
 
 		# check if it is possible to turn in the entered direction

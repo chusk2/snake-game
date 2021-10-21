@@ -47,12 +47,12 @@ scr.onkeypress(lambda: snk.turn_snake('up'), 'Up')
 scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
 scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
 scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
-#scr.onkeypress(snk.move, 'space')
+scr.onkeypress(snk.move, 'space')
 scr.listen()
 
 while True:
-    snk.move()
+    # snk.move()
     scr.update()
     time.sleep(0.1)
-    scr.exitonclick()
+
 
