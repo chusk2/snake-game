@@ -1,5 +1,5 @@
 from turtle import Turtle
-from main import max_posx, max_posy, min_posx, min_posy
+
 
 class Segment(Turtle):
     def __init__(self, posx, posy):
@@ -14,13 +14,19 @@ class Segment(Turtle):
         self.goto(self.posx, self.posy)
         self.turning_points = []
 
-    def check_crossing_margin(self):
+    def check_crossing_margin(self, margins):
         """ check if segment is crossing a border. If so, transport it
         to opposite border, maintaining orientation"""
         self.speed(0)
         self.hideturtle()
         posx = self.xcor()
         posy = self.ycor()
+
+        # margins = [min_x, min_y, max_x, max_y]
+        min_posx = margins[0]
+        min_posy = margins[1]
+        max_posx = margins[2]
+        max_posy = margins[3]
 
         if posx >= max_posx:  # crossing the right side
             self.goto(-max_posx + 10, posy)

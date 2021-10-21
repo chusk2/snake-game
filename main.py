@@ -1,3 +1,4 @@
+import time
 from turtle import Turtle, Screen
 from snake import Snake
 scr = Screen()
@@ -12,6 +13,7 @@ max_posx = size - 20
 min_posx = - size + 20
 max_posy = size - 20
 min_posy = - size + 20
+margins = [min_posx, min_posy, max_posx, max_posy]
 
 # create grid
 number_turtles = 2 * size // 20
@@ -37,7 +39,7 @@ for i in range(number_turtles+1):  # +1 to fill the borders of grid
 scr.update()
 
 # Event listeners
-scr.onkeypress(lambda: Snake.turn_snake('up'), 'Up')
+scr.onkeypress(lambda k='up': Snake.turn_snake(k), 'Up')
 scr.onkeypress(lambda: Snake.turn_snake('down'), 'Down')
 scr.onkeypress(lambda: Snake.turn_snake('left'), 'Left')
 scr.onkeypress(lambda: Snake.turn_snake('right'), 'Right')
@@ -45,10 +47,13 @@ scr.onkeypress(Snake.move, 'space')
 
 scr.listen()
 
-
-snk = Snake(3)
-snk.move()
-
+# create a snake of size 3 and restrain its movement
+# to the margins of the canvas
+snk = Snake(3, margins)
+while True:
+    snk.move()
+    scr.update()
+    time.sleep(0.1)
 
 
 scr.exitonclick()

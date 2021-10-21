@@ -1,12 +1,11 @@
-import time
 from segment import Segment
-from main import scr
 
 
 class Snake:
-	def __init__(self, size):
+	def __init__(self, size, margins):
 		self.pieces = []
 		self.snake_size = size
+		self.margins = margins
 		for i in range(self.snake_size):
 			self.pieces.append(
 				Segment(posx=20 * self.snake_size - i * 20, posy=0))
@@ -14,15 +13,14 @@ class Snake:
 	def move(self):  # move the whole snake
 
 		for i in self.pieces:
-			i.check_crossing_margin()
+			# margins = [min_x, min_y, max_x, max_y]
+			i.check_crossing_margin(self.margins)
 			i.move_segment()
 
-		scr.update()
 		# print(f'X orientation: {i.x_direct}, Y orientation: {i.y_direct}')
 		# for i in snake:
 		# 	print(i.position(), end=' ')
 		# print('\n')
-		time.sleep(0.1)
 
 	def turn_snake(self, pressed_key):
 		"""
@@ -53,7 +51,3 @@ class Snake:
 		# moving horizontally
 		elif heading_x == 0 and pressed_key in ['left', 'right']:
 			make_turning_point(head_snake_pos, pressed_key)
-
-
-
-
