@@ -1,5 +1,5 @@
 from turtle import Turtle
-
+from main import max_posx, max_posy, min_posx, min_posy
 
 class Segment(Turtle):
     def __init__(self, posx, posy):
@@ -33,12 +33,6 @@ class Segment(Turtle):
 
         self.speed(3)
         self.showturtle()
-
-    def make_turning_point(self, key_pressed):
-
-        head_pos = snake[0].position()
-        # turning point: [head position, direction]
-        self.turning_points.append([head_pos, key_pressed])
 
     def rotate_segment(self, direction):
         """ changes the orientation of the segment"""
@@ -89,12 +83,15 @@ class Segment(Turtle):
                     self.y_direct = 0
 
     def move_segment(self):
-        if self.turning_points:  # if there are rotations still to be performed
+        # if there are rotations still to be carried out
+        if self.turning_points:
             # turning point: [head position, direction]
-            first_turn = self.turning_points[-1]
+            first_turn = self.turning_points[0]
             head_position = first_turn[0]
             direction = first_turn[1]
             # if segment has reached earliest turning point, rotate it
             if self.position() == head_position:
                 self.rotate_segment(direction)
+            # remove the turning point from segment's turning list
+            self.turning_points.pop()
         self.forward(20)

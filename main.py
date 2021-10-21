@@ -1,5 +1,5 @@
 from turtle import Turtle, Screen
-
+from snake import Snake
 scr = Screen()
 scr.setup(height=800, width=800)
 scr.bgcolor('black')
@@ -35,4 +35,20 @@ for i in range(number_turtles+1):  # +1 to fill the borders of grid
     y_t.hideturtle()
 
 scr.update()
+
+# Event listeners
+scr.onkeypress(lambda: Snake.turn_snake('up'), 'Up')
+scr.onkeypress(lambda: Snake.turn_snake('down'), 'Down')
+scr.onkeypress(lambda: Snake.turn_snake('left'), 'Left')
+scr.onkeypress(lambda: Snake.turn_snake('right'), 'Right')
+scr.onkeypress(Snake.move, 'space')
+
+scr.listen()
+
+
+snk = Snake(3)
+snk.move()
+
+
+
 scr.exitonclick()
