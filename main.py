@@ -3,7 +3,7 @@ from turtle import Turtle, Screen
 from snake import Snake
 scr = Screen()
 scr.setup(height=800, width=800)
-scr.bgcolor('black')
+# scr.bgcolor('black')
 scr.title('Snake Game')
 scr.tracer(0)
 
@@ -20,8 +20,8 @@ number_turtles = 2 * size // 20
 for i in range(number_turtles+1):  # +1 to fill the borders of grid
     x_t = Turtle()  # turtle to draw horizontal lines
     y_t = Turtle()  # turtle to draw vertical lines
-    x_t.pencolor('blue')
-    y_t.pencolor('blue')
+    x_t.pencolor('black')
+    y_t.pencolor('black')
     # set turtles in their starting positions without painting
     x_t.penup()
     y_t.penup()
@@ -36,6 +36,17 @@ for i in range(number_turtles+1):  # +1 to fill the borders of grid
     x_t.hideturtle()
     y_t.hideturtle()
 
+# x_line = Turtle()
+# x_line.pencolor('red')
+# x_line.goto(size, 0)
+# y_line = Turtle()
+# y_line.pencolor('red')
+# y_line.goto(0, size)
+# y2_line = Turtle()
+# y2_line.pencolor('red')
+# y2_line.goto(10, 0)
+# y2_line.goto(10, size)
+
 scr.update()
 
 # create a snake of size 3 and restrain its movement
@@ -47,6 +58,7 @@ scr.onkeypress(lambda: snk.turn_snake('up'), 'Up')
 scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
 scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
 scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
+scr.onkeypress(snk.return_position, 'p')
 scr.onkeypress(snk.move, 'space')
 scr.listen()
 
@@ -55,4 +67,5 @@ while True:
     scr.update()
     time.sleep(0.1)
 
+scr.exitonclick()
 

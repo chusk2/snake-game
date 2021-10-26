@@ -4,10 +4,10 @@ from turtle import Turtle
 class Segment(Turtle):
     def __init__(self, posx, posy):
         super().__init__()
-        self.pencolor('green')
-        self.shape('circle')
-        self.x_direct = +1
-        self.y_direct = 0
+        self.color('green', 'green')
+        self.shape('square')
+        # self.x_direct = +1
+        # self.y_direct = 0
         self.posx = posx
         self.posy = posy
         self.penup()
@@ -42,51 +42,70 @@ class Segment(Turtle):
 
     def rotate_segment(self, direction):
         """ changes the orientation of the segment"""
+
         # moving horizontal
-        if self.y_direct == 0:
+        if self.heading() in [0, 180]:
             # moving left
-            if self.x_direct == -1:  # leftwards
-                if direction == 'up':
-                    self.right(90)
-                    self.x_direct = 0
-                    self.y_direct = +1
-                elif direction == 'down':
-                    self.left(90)
-                    self.x_direct = 0
-                    self.y_direct = -1
-            # moving right
-            elif self.x_direct == +1:  # right
-                if direction == 'up':
-                    self.left(90)
-                    self.x_direct = 0
-                    self.y_direct = +1
-                elif direction == 'down':
-                    self.right(90)
-                    self.x_direct = 0
-                    self.y_direct = -1
+            if direction == 'up':
+                self.setheading(90)
+            elif direction == 'down':
+                self.setheading(270)
 
         # moving vertical
-        elif self.x_direct == 0:
-            # moving up
-            if self.y_direct == 1:  # up
-                if direction == 'left':
-                    self.left(90)
-                    self.x_direct = -1
-                    self.y_direct = 0
-                elif direction == 'right':
-                    self.right(90)
-                    self.x_direct = +1
-                    self.y_direct = 0
-            # moving down
-            elif self.y_direct == -1:  # down
-                if direction == 'left':
-                    self.right(90)
-                    self.x_direct = -1
-                    self.y_direct = 0
-                elif direction == 'right':
-                    self.left(90)
-                    self.x_direct = 1
-                    self.y_direct = 0
+        elif self.heading() in [90, 270]:
+            if direction == 'left':
+                self.setheading(180)
+
+            elif direction == 'right':
+                self.setheading(0)
+
+        # old changing direction function - TO BE REMOVED
+        # def rotate_segment(self, direction):
+        #     """ changes the orientation of the segment
+        #     turtle.heading() is sensitive to the current
+        #     """
+        #     piece_heading = self.heading()
+        #     LEFT = 180
+        #     RIGHT = 0
+        #     UP = 90
+        #     DOWN = 270
+        #     # moving horizontal
+        #     if self.heading() in [0, 180]:
+        #         # moving left
+        #         if piece_heading == LEFT:
+        #             if direction == 'up':
+        #                 self.right(90)
+        #
+        #             elif direction == 'down':
+        #                 self.left(90)
+        #
+        #         # moving right
+        #         elif piece_heading == RIGHT:
+        #             if direction == 'up':
+        #                 self.left(90)
+        #
+        #             elif direction == 'down':
+        #                 self.right(90)
+        #
+        #     # moving vertical
+        #     elif piece_heading in [UP, DOWN]:
+        #
+        #         # moving up
+        #         if piece_heading == UP:
+        #             if direction == 'left':
+        #                 self.left(90)
+        #
+        #             elif direction == 'right':
+        #                 self.right(90)
+        #
+        #         # moving down
+        #         elif piece_heading == DOWN:
+        #
+        #             if direction == 'left':
+        #                 self.right(90)
+        #
+        #             elif direction == 'right':
+        #                 self.left(90)
 
     def move_segment(self):
         # if there are rotations still to be carried out
@@ -94,12 +113,20 @@ class Segment(Turtle):
         if self.turning_points:
             print(self.turning_points)
             # turning point: [head position, direction]
-            first_turn = self.turning_points[0]
+            first_turn = self.turning_points[-1]
             head_position = first_turn[0]
+            print(f'Position of head when turned: {head_position}')
+            print(f'Position of segment: {self.position()}')
             direction = first_turn[1]
+
             # if segment has reached earliest turning point, rotate it
             if self.position() == head_position:
                 self.rotate_segment(direction)
-            # remove the turning point from segment's turning list
-            self.turning_points.pop()
+
+                # IMPORTANT: REMOVE TURNING POINT FROM LIST ONLY IF
+                # THE TURN WAS MADE!!!
+                # remove the turning point from segment's turning list
+                self.turning_points.pop()
         self.forward(20)
+        print(f'New position: {self.position()}')
+
