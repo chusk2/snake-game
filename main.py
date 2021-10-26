@@ -3,7 +3,7 @@ from turtle import Turtle, Screen
 from snake import Snake
 scr = Screen()
 scr.setup(height=800, width=800)
-# scr.bgcolor('black')
+scr.bgcolor('black')
 scr.title('Snake Game')
 scr.tracer(0)
 
@@ -14,8 +14,8 @@ def create_grid(dimensions):
     for i in range(number_turtles+1):  # +1 to fill the borders of grid
         x_t = Turtle()  # turtle to draw horizontal lines
         y_t = Turtle()  # turtle to draw vertical lines
-        x_t.pencolor('black')
-        y_t.pencolor('black')
+        x_t.pencolor('gray')
+        y_t.pencolor('gray')
         # set turtles in their starting positions without painting
         x_t.penup()
         y_t.penup()
@@ -31,9 +31,13 @@ def create_grid(dimensions):
         y_t.hideturtle()
 
 
-def start_game():
+def finish_game():
+    game_on = False
+    return game_on
 
-    scr.clearscreen()
+def start_game():
+    game_on = True
+    # scr.clearscreen()
     # Dimensions of canvas
     dimensions = 300
     max_posx = dimensions - 20
@@ -58,13 +62,14 @@ def start_game():
     scr.onkeypress(snk.return_position, 'p')
     scr.onkeypress(snk.move, 'space')
     scr.onkeypress(start_game, 's')
+    scr.onkeypress(finish_game, 'q')
     scr.listen()
 
-    while True:
+    while game_on:
         snk.move()
         scr.update()
         time.sleep(0.1)
-    scr.onkeypress()
+    scr.exitonclick()
 
 
 start_game()
