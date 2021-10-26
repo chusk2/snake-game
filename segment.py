@@ -113,7 +113,7 @@ class Segment(Turtle):
         if self.turning_points:
             print(self.turning_points)
             # turning point: [head position, direction]
-            first_turn = self.turning_points[-1]
+            first_turn = self.turning_points[0]
             head_position = first_turn[0]
             print(f'Position of head when turned: {head_position}')
             print(f'Position of segment: {self.position()}')
