@@ -9,7 +9,7 @@ scr.tracer(0)
 
 
 def create_grid(dimensions):
-
+    scr.tracer(0)
     number_turtles = 2 * dimensions // 20
     for i in range(number_turtles+1):  # +1 to fill the borders of grid
         x_t = Turtle()  # turtle to draw horizontal lines
