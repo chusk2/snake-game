@@ -1,6 +1,7 @@
 import time
 from turtle import Turtle, Screen
 from snake import Snake
+from food import Food
 
 
 class Game:
@@ -15,6 +16,8 @@ class Game:
         self.margins = self.set_margins()
         self.snk = Snake(snake_size, self.margins)
         self.game_is_on = None
+        self.score = 0
+        self.food = Food(self.size)
 
     def set_margins(self):
         # Dimensions of canvas
@@ -73,15 +76,23 @@ class Game:
         # self.scr.onkeypress(self.pause, 'space')
         self.scr.listen()
 
+    def check_eaten_food(self):
+        snake_head = self.snk.pieces[0]
+        if snake_head == self.food.position():
+            self.score += 10
+            self.food.move()
+
     def start(self):
         # start the game
         self.game_is_on = True
         self.draw_margins()
+        self.draw_grid()
         self.listen_to_keys()
         self.scr.update()
 
         while self.game_is_on:
             self.snk.move()
+            self.check_eaten_food()
             self.scr.update()
             time.sleep(0.1)
 
