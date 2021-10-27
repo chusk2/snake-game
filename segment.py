@@ -111,12 +111,12 @@ class Segment(Turtle):
         # if there are rotations still to be carried out
 
         if self.turning_points:
-            print(self.turning_points)
+            # print(self.turning_points)
             # turning point: [head position, direction]
             first_turn = self.turning_points[0]
             head_position = first_turn[0]
-            print(f'Position of head when turned: {head_position}')
-            print(f'Position of segment: {self.position()}')
+            # print(f'Position of head when turned: {head_position}')
+            # print(f'Position of segment: {self.position()}')
             direction = first_turn[1]
 
             # if segment has reached earliest turning point, rotate it
@@ -126,7 +126,7 @@ class Segment(Turtle):
                 # IMPORTANT: REMOVE TURNING POINT FROM LIST ONLY IF
                 # THE TURN WAS MADE!!!
                 # remove the turning point from segment's turning list
-                self.turning_points.pop()
+                del self.turning_points[0]
         self.forward(20)
-        print(f'New position: {self.position()}')
+        # print(f'New position: {self.position()}')
 

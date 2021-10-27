@@ -6,13 +6,15 @@ class Snake:
 		self.pieces = []
 		self.snake_size = size
 		self.margins = margins
-		print('Starting coordinates of segments: ', end='')
+		# print('Starting coordinates of segments: ', end='')
 		for i in range(self.snake_size, 0, -1):
-			start_position = 20*i - 10
-			self.pieces.append(
-				Segment(posx=start_position, posy=10))
-			print(self.pieces[-1].position(), end=' - ')
-		print('\n')
+			start_pos = 20*i - 10
+			self.pieces.append(Segment(posx=start_pos, posy=10))
+			# paint in blue the head of snake
+			if i == self.snake_size:
+				self.pieces[0].color('blue')
+			# print(self.pieces[-1].position(), end=' - ')
+		# print('\n')
 
 	def move(self):  # move the whole snake
 
@@ -49,7 +51,7 @@ class Snake:
 			# to be carried out by the segment
 			for i in self.pieces:  # every segment gets a rotate order
 				i.turning_points.append([head_position, key])
-			print(f'Turning point created at {head_position}')
+			# print(f'Turning point created at {head_position}')
 
 		# check if it is possible to turn in the entered direction
 		head_snake = self.pieces[0]
