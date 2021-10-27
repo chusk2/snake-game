@@ -1,97 +1,99 @@
 import time
 from turtle import Turtle, Screen
 from snake import Snake
-scr = Screen()
-scr.setup(height=800, width=800)
-scr.bgcolor('black')
-scr.title('Snake Game')
-scr.tracer(0)
 
 
-def create_grid(dimensions):
-    scr.tracer(0)
-    number_turtles = 2 * dimensions // 20
-    for i in range(number_turtles+1):  # +1 to fill the borders of grid
-        x_t = Turtle()  # turtle to draw horizontal lines
-        y_t = Turtle()  # turtle to draw vertical lines
-        x_t.pencolor('gray')
-        y_t.pencolor('gray')
-        # set turtles in their starting positions without painting
-        x_t.penup()
-        y_t.penup()
-        # starting positions
-        y_t.goto(-dimensions + 20 * i, -dimensions)  # vertical lines
-        x_t.goto(-dimensions, -dimensions + 20 * i)  # horizontal lines
-        x_t.pendown()
-        y_t.pendown()
-        # draw lines until end of canvas
-        x_t.goto(dimensions, x_t.ycor())
-        y_t.goto(y_t.xcor(), dimensions)
-        x_t.hideturtle()
-        y_t.hideturtle()
+class Game:
+    def __init__(self, snake_size=3, canvas_size=300, canvas_color='black'):
+        # create a screen
+        self.scr = Screen()
+        self.scr.setup(height=canvas_size + 50, width=canvas_size + 50)
+        self.scr.bgcolor(canvas_color)
+        self.scr.title('Snake Game')
+        self.scr.tracer(0)
+        self.size = canvas_size
+        self.margins = self.set_margins()
+        self.snk = Snake(snake_size, self.margins)
+        self.game_is_on = None
 
-    # for i in range(2*(number_turtles + 1)):  # +1 to fill the borders of grid
-    #     horizontal = Turtle()  # turtle to draw horizontal lines
-    #     vertical = Turtle()  # turtle to draw vertical lines
-    #     horizontal.pencolor('red')
-    #     vertical.pencolor('red')
-    #     # set turtles in their starting positions without painting
-    #     horizontal.penup()
-    #     vertical.penup()
-    #     # starting positions
-    #     vertical.goto(-dimensions + 10 * i, -dimensions)  # vertical lines
-    #     horizontal.goto(-dimensions, -dimensions + 10 * i)  # horizontal lines
-    #     horizontal.pendown()
-    #     vertical.pendown()
-    #     # draw lines until end of canvas
-    #     horizontal.goto(dimensions, horizontal.ycor())
-    #     vertical.goto(vertical.xcor(), dimensions)
-    #     horizontal.hideturtle()
-    #     vertical.hideturtle()
+    def set_margins(self):
+        # Dimensions of canvas
+        max_posx = self.size - 10
+        min_posx = - self.size + 10
+        max_posy = self.size - 10
+        min_posy = - self.size + 10
+        return [min_posx, min_posy, max_posx, max_posy]
+
+    def draw_margins(self):
+        margin = Turtle()  # turtle to draw margins
+        margin.pencolor('blue')
+        margin.pensize(2)
+        # set turtle in left upper corner
+        margin.penup()
+        margin.goto(-self.size, self.size)  # left upper corner
+        margin.pendown()
+        for _ in range(4):
+            margin.forward(self.size * 2)
+            margin.right(90)
+        margin.hideturtle()
+        self.scr.update()
+
+    def draw_grid(self):
+        
+        number_turtles = 2 * self.size // 20
+        for i in range(number_turtles+1):  # +1 to fill the borders of grid
+            x_t = Turtle()  # turtle to draw horizontal lines
+            y_t = Turtle()  # turtle to draw vertical lines
+            x_t.pencolor('gray')
+            y_t.pencolor('gray')
+            # set turtles in their starting positions without painting
+            x_t.penup()
+            y_t.penup()
+            # starting positions
+            y_t.goto(-self.size + 20 * i, -self.size)  # vertical lines
+            x_t.goto(-self.size, -self.size + 20 * i)  # horizontal lines
+            x_t.pendown()
+            y_t.pendown()
+            # draw lines until end of canvas
+            x_t.goto(self.size, x_t.ycor())
+            y_t.goto(y_t.xcor(), self.size)
+            x_t.hideturtle()
+            y_t.hideturtle()
+    
+        self.scr.update()
+    
+    def listen_to_keys(self):
+        # Event listeners
+        self.scr.onkeypress(lambda: self.snk.turn_snake('up'), 'Up')
+        self.scr.onkeypress(lambda: self.snk.turn_snake('down'), 'Down')
+        self.scr.onkeypress(lambda: self.snk.turn_snake('left'), 'Left')
+        self.scr.onkeypress(lambda: self.snk.turn_snake('right'), 'Right')
+        self.scr.onkeypress(self.snk.return_position, 'p')
+        # self.scr.onkeypress(snk.move, 'space')
+        # self.scr.onkeypress(self.pause, 'space')
+        self.scr.listen()
+
+    def start(self):
+        # start the game
+        self.game_is_on = True
+        self.draw_margins()
+        self.listen_to_keys()
+        self.scr.update()
+
+        while self.game_is_on:
+            self.snk.move()
+            self.scr.update()
+            time.sleep(0.1)
+
+    # def pause(self):
+    #     if self.game_is_on:
+    #         self.game_is_on = False
+    #     elif not self.game_is_on:
+    #         self.game_is_on = True
 
 
-        scr.update()
+game = Game(snake_size=4, canvas_size=300, canvas_color='white')
+game.start()
 
+game.scr.exitonclick()
 
-def finish_game():
-    game_on = False
-    return game_on
-
-def start_game():
-    game_on = True
-    # scr.clearscreen()
-    # Dimensions of canvas
-    dimensions = 300
-    max_posx = dimensions - 10
-    min_posx = - dimensions + 10
-    max_posy = dimensions - 10
-    min_posy = - dimensions + 10
-    margins = [min_posx, min_posy, max_posx, max_posy]
-
-    create_grid(dimensions)
-
-    scr.update()
-
-    # create a snake of size 3 and restrain its movement
-    # to the margins of the canvas
-    snk = Snake(10, margins)
-
-    # Event listeners
-    scr.onkeypress(lambda: snk.turn_snake('up'), 'Up')
-    scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
-    scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
-    scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
-    scr.onkeypress(snk.return_position, 'p')
-    scr.onkeypress(snk.move, 'space')
-    scr.onkeypress(start_game, 's')
-    scr.onkeypress(finish_game, 'q')
-    scr.listen()
-
-    while game_on:
-        # snk.move()
-        scr.update()
-        time.sleep(0.1)
-    scr.exitonclick()
-
-
-start_game()
