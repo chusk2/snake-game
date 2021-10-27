@@ -30,6 +30,8 @@ def create_grid(dimensions):
         x_t.hideturtle()
         y_t.hideturtle()
 
+        scr.update()
+
 
 def finish_game():
     game_on = False
@@ -40,10 +42,10 @@ def start_game():
     # scr.clearscreen()
     # Dimensions of canvas
     dimensions = 300
-    max_posx = dimensions - 20
-    min_posx = - dimensions + 20
-    max_posy = dimensions - 20
-    min_posy = - dimensions + 20
+    max_posx = dimensions - 10
+    min_posx = - dimensions + 10
+    max_posy = dimensions - 10
+    min_posy = - dimensions + 10
     margins = [min_posx, min_posy, max_posx, max_posy]
 
     create_grid(dimensions)
@@ -59,7 +61,7 @@ def start_game():
     scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
     scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
     scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
-    scr.onkeypress(snk.return_position, 'p')
+    # scr.onkeypress(snk.return_position, 'p')
     scr.onkeypress(snk.move, 'space')
     scr.onkeypress(start_game, 's')
     scr.onkeypress(finish_game, 'q')
