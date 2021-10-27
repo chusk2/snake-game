@@ -13,8 +13,6 @@ class Snake:
 			# paint in blue the head of snake
 			if i == self.snake_size:
 				self.pieces[0].color('blue')
-			# print(self.pieces[-1].position(), end=' - ')
-		# print('\n')
 
 	def move(self):  # move the whole snake
 
@@ -23,16 +21,11 @@ class Snake:
 			piece.check_crossing_margin(self.margins)
 			piece.move_segment()
 
-		# print(f'X orientation: {i.x_direct}, Y orientation: {i.y_direct}')
-		# for i in snake:
-		# 	print(i.position(), end=' ')
-		# print('\n')
-
-	def return_position(self):
-		for i in range(self.snake_size):
-			print(f'Segment {i}: ({self.pieces[i].position()[0]:.0f},'
-			  f'{self.pieces[i].position()[1]:.0f})', end=' - ')
-		print('\n')
+	# def return_position(self):
+	# 	for i in range(self.snake_size):
+	# 		print(f'Segment {i}: ({self.pieces[i].position()[0]:.0f},'
+	# 		  f'{self.pieces[i].position()[1]:.0f})', end=' - ')
+	# 	print('\n')
 
 	def turn_snake(self, pressed_key):
 		"""
@@ -51,14 +44,11 @@ class Snake:
 			# to be carried out by the segment
 			for i in self.pieces:  # every segment gets a rotate order
 				i.turning_points.append([head_position, key])
-			# print(f'Turning point created at {head_position}')
 
 		# check if it is possible to turn in the entered direction
 		head_snake = self.pieces[0]
 		head_snake_pos = head_snake.position()
 
-		# heading_x = head_snake.x_direct
-		# heading_y = head_snake.y_direct
 		# moving horizontally
 		if head_snake.heading() in [0, 180] and \
 			pressed_key in ['up', 'down']:
