@@ -27,15 +27,30 @@ class Segment(Turtle):
         min_posy = margins[1]
         max_posx = margins[2]
         max_posy = margins[3]
-
-        if posx >= max_posx:  # crossing the right side
-            self.goto(-max_posx, posy)
-        elif posx <= min_posx:  # crossing the left side
+        # add or sustract 20 px to compensate the following forward(20)
+        # crossing the right side
+        if posx > max_posx:
+            self.goto(min_posx, posy)
+        # crossing the left side
+        elif posx < min_posx:
             self.goto(max_posx, posy)
-        elif posy >= max_posy:  # crossing the upper side
-            self.goto(posx, - max_posy)
-        elif posy <= min_posy:  # crossing the bottom side
+        # crossing the upper side
+        elif posy > max_posy:
+            self.goto(posx, min_posy)
+        # crossing the bottom side
+        elif posy < min_posy:
             self.goto(posx, max_posy)
+        # if posx >= max_posx and self.heading() == 0:
+        #     self.goto(min_posx - 20, posy)
+        # # crossing the left side
+        # elif posx == min_posx and self.heading() == 180:
+        #     self.goto(max_posx + 20, posy)
+        # # crossing the upper side
+        # elif posy == max_posy and self.heading() == 90:
+        #     self.goto(posx, min_posy - 20)
+        # # crossing the bottom side
+        # elif posy == min_posy and self.heading() == 270:
+        #     self.goto(posx, max_posy + 20)
 
         self.speed(3)
         self.showturtle()

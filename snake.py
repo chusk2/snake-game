@@ -18,14 +18,15 @@ class Snake:
 
 		for piece in self.pieces:
 			# margins = [min_x, min_y, max_x, max_y]
-			piece.check_crossing_margin(self.margins)
 			piece.move_segment()
+			piece.check_crossing_margin(self.margins)
 
-	# def return_position(self):
-	# 	for i in range(self.snake_size):
-	# 		print(f'Segment {i}: ({self.pieces[i].position()[0]:.0f},'
-	# 		  f'{self.pieces[i].position()[1]:.0f})', end=' - ')
-	# 	print('\n')
+
+	def return_position(self):
+		for i in range(self.snake_size):
+			print(f'Segment {i}: ({self.pieces[i].position()[0]:.0f},'
+			  f'{self.pieces[i].position()[1]:.0f})', end=' - ')
+		print('\n')
 
 	def turn_snake(self, pressed_key):
 		"""

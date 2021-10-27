@@ -30,6 +30,26 @@ def create_grid(dimensions):
         x_t.hideturtle()
         y_t.hideturtle()
 
+    # for i in range(2*(number_turtles + 1)):  # +1 to fill the borders of grid
+    #     horizontal = Turtle()  # turtle to draw horizontal lines
+    #     vertical = Turtle()  # turtle to draw vertical lines
+    #     horizontal.pencolor('red')
+    #     vertical.pencolor('red')
+    #     # set turtles in their starting positions without painting
+    #     horizontal.penup()
+    #     vertical.penup()
+    #     # starting positions
+    #     vertical.goto(-dimensions + 10 * i, -dimensions)  # vertical lines
+    #     horizontal.goto(-dimensions, -dimensions + 10 * i)  # horizontal lines
+    #     horizontal.pendown()
+    #     vertical.pendown()
+    #     # draw lines until end of canvas
+    #     horizontal.goto(dimensions, horizontal.ycor())
+    #     vertical.goto(vertical.xcor(), dimensions)
+    #     horizontal.hideturtle()
+    #     vertical.hideturtle()
+
+
         scr.update()
 
 
@@ -61,14 +81,14 @@ def start_game():
     scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
     scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
     scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
-    # scr.onkeypress(snk.return_position, 'p')
+    scr.onkeypress(snk.return_position, 'p')
     scr.onkeypress(snk.move, 'space')
     scr.onkeypress(start_game, 's')
     scr.onkeypress(finish_game, 'q')
     scr.listen()
 
     while game_on:
-        snk.move()
+        # snk.move()
         scr.update()
         time.sleep(0.1)
     scr.exitonclick()
