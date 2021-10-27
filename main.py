@@ -32,15 +32,16 @@ def create_grid(dimensions):
 
         scr.update()
 
+
 def start_game():
 
     scr.clearscreen()
     # Dimensions of canvas
     dimensions = 300
-    max_posx = dimensions - 20
-    min_posx = - dimensions + 20
-    max_posy = dimensions - 20
-    min_posy = - dimensions + 20
+    max_posx = dimensions - 10
+    min_posx = - dimensions + 10
+    max_posy = dimensions - 10
+    min_posy = - dimensions + 10
     margins = [min_posx, min_posy, max_posx, max_posy]
 
     create_grid(dimensions)
