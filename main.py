@@ -30,6 +30,7 @@ def create_grid(dimensions):
         x_t.hideturtle()
         y_t.hideturtle()
 
+        scr.update()
 
 def start_game():
 
@@ -55,7 +56,7 @@ def start_game():
     scr.onkeypress(lambda: snk.turn_snake('down'), 'Down')
     scr.onkeypress(lambda: snk.turn_snake('left'), 'Left')
     scr.onkeypress(lambda: snk.turn_snake('right'), 'Right')
-    scr.onkeypress(snk.return_position, 'p')
+    # scr.onkeypress(snk.return_position, 'p')
     scr.onkeypress(snk.move, 'space')
     scr.onkeypress(start_game, 's')
     scr.listen()
