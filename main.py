@@ -72,14 +72,24 @@ class Game:
         self.scr.onkeypress(lambda: self.snk.turn_snake('left'), 'Left')
         self.scr.onkeypress(lambda: self.snk.turn_snake('right'), 'Right')
         self.scr.onkeypress(self.snk.return_position, 'p')
-        # self.scr.onkeypress(snk.move, 'space')
+        self.scr.onkeypress(self.food.return_position, 'f')
+        self.scr.onkeypress(self.paused_mode, 'space')
         # self.scr.onkeypress(self.pause, 'space')
         self.scr.listen()
 
+    def paused_mode(self):
+        self.check_eaten_food()
+        self.snk.move()
+        self.scr.update()
+        time.sleep(0.1)
+
     def check_eaten_food(self):
         snake_head = self.snk.pieces[0]
-        if snake_head == self.food.position():
+        print(type(snake_head.position()))
+        print(type(self.food.position()))
+        if snake_head.position() == self.food.position():
             self.score += 10
+            print(f'Apple eaten! Your score is: {self.score}')
             self.food.move()
 
     def start(self):
@@ -90,11 +100,11 @@ class Game:
         self.listen_to_keys()
         self.scr.update()
 
-        while self.game_is_on:
-            self.snk.move()
-            self.check_eaten_food()
-            self.scr.update()
-            time.sleep(0.1)
+        # while self.game_is_on:
+        #     self.check_eaten_food()
+        #     # self.snk.move()
+        #     self.scr.update()
+        #     time.sleep(0.1)
 
     # def pause(self):
     #     if self.game_is_on:

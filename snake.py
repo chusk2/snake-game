@@ -1,5 +1,5 @@
 from segment import Segment
-
+from food import Food
 
 class Snake:
 	def __init__(self, size, margins):
@@ -10,22 +10,24 @@ class Snake:
 		for i in range(self.snake_size, 0, -1):
 			start_pos = 20*i - 10
 			self.pieces.append(Segment(posx=start_pos, posy=10))
+
 			# paint in blue the head of snake
 			if i == self.snake_size:
 				self.pieces[0].color('blue')
 
 	def move(self):  # move the whole snake
-
 		for piece in self.pieces:
 			# margins = [min_x, min_y, max_x, max_y]
 			piece.move_segment()
 			piece.check_crossing_margin(self.margins)
 
-
 	def return_position(self):
-		for i in range(self.snake_size):
-			print(f'Segment {i}: ({self.pieces[i].position()[0]:.0f},'
-			  f'{self.pieces[i].position()[1]:.0f})', end=' - ')
+		for index, item in enumerate(self.pieces):
+			if item == self.pieces[0]:
+				print(f'Head: {item.position()[0]:.0f},{item.position()[1]:.0f}', end=' - ')
+				continue
+			print(f'Segment {index}: ({item.position()[0]:.0f},{item.position()[1]:.0f})',
+				  end=' - ')
 		print('\n')
 
 	def turn_snake(self, pressed_key):
