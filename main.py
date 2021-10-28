@@ -1,7 +1,6 @@
 import time
 from turtle import Turtle, Screen
 from snake import Snake
-from food import Food
 
 
 class Game:
@@ -13,19 +12,10 @@ class Game:
         self.scr.title('Snake Game')
         self.scr.tracer(0)
         self.size = canvas_size
-        self.margins = self.set_margins()
-        self.snk = Snake(snake_size, self.margins)
+        self.snk = Snake(snake_size, canvas_size)
         self.game_is_on = None
         self.score = 0
-        self.food = Food(self.size)
-
-    def set_margins(self):
-        # Dimensions of canvas
-        max_posx = self.size - 10
-        min_posx = - self.size + 10
-        max_posy = self.size - 10
-        min_posy = - self.size + 10
-        return [min_posx, min_posy, max_posx, max_posy]
+        #self.food = Food(self.size)
 
     def draw_margins(self):
         margin = Turtle()  # turtle to draw margins
@@ -43,7 +33,7 @@ class Game:
 
     def draw_grid(self):
         
-        number_turtles = 2 * self.size // 20
+        number_turtles = 2 * (self.size // 20)
         for i in range(number_turtles+1):  # +1 to fill the borders of grid
             x_t = Turtle()  # turtle to draw horizontal lines
             y_t = Turtle()  # turtle to draw vertical lines
@@ -54,6 +44,7 @@ class Game:
             y_t.penup()
             # starting positions
             y_t.goto(-self.size + 20 * i, -self.size)  # vertical lines
+            y_t.write(-self.size + 20 * i)
             x_t.goto(-self.size, -self.size + 20 * i)  # horizontal lines
             x_t.pendown()
             y_t.pendown()
@@ -64,7 +55,13 @@ class Game:
             y_t.hideturtle()
     
         self.scr.update()
-    
+
+    def check_eaten_food(self):
+        snake_head_position = self.snk.pieces[0].position()
+        if self.food.eaten_food(snake_head_position):
+            self.score += 10
+            print(f'Apple eaten! Your score is: {self.score}')
+
     def listen_to_keys(self):
         # Event listeners
         self.scr.onkeypress(lambda: self.snk.turn_snake('up'), 'Up')
@@ -72,7 +69,7 @@ class Game:
         self.scr.onkeypress(lambda: self.snk.turn_snake('left'), 'Left')
         self.scr.onkeypress(lambda: self.snk.turn_snake('right'), 'Right')
         self.scr.onkeypress(self.snk.return_position, 'p')
-        self.scr.onkeypress(self.food.return_position, 'f')
+        self.scr.onkeypress(self.snk.apple.return_position, 'f')
         self.scr.onkeypress(self.paused_mode, 'space')
         # self.scr.onkeypress(self.pause, 'space')
         self.scr.listen()
@@ -83,13 +80,6 @@ class Game:
         self.scr.update()
         time.sleep(0.1)
 
-    def check_eaten_food(self):
-        snake_head = self.snk.pieces[0]
-        if snake_head.position() == self.food.position():
-            self.score += 10
-            print(f'Apple eaten! Your score is: {self.score}')
-            self.food.move()
-
     def start(self):
         # start the game
         self.game_is_on = True
@@ -98,11 +88,11 @@ class Game:
         self.listen_to_keys()
         self.scr.update()
 
-        # while self.game_is_on:
-        #     self.check_eaten_food()
-        #     # self.snk.move()
-        #     self.scr.update()
-        #     time.sleep(0.1)
+        while self.game_is_on:
+            #self.check_eaten_food()
+            self.snk.move()
+            self.scr.update()
+            time.sleep(0.1)
 
     # def pause(self):
     #     if self.game_is_on:
@@ -111,7 +101,7 @@ class Game:
     #         self.game_is_on = True
 
 
-game = Game(snake_size=4, canvas_size=300, canvas_color='white')
+game = Game(snake_size=4, canvas_size=160, canvas_color='white')
 game.start()
 
 game.scr.exitonclick()
