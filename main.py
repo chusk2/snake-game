@@ -85,8 +85,6 @@ class Game:
 
     def check_eaten_food(self):
         snake_head = self.snk.pieces[0]
-        print(type(snake_head.position()))
-        print(type(self.food.position()))
         if snake_head.position() == self.food.position():
             self.score += 10
             print(f'Apple eaten! Your score is: {self.score}')

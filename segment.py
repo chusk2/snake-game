@@ -1,5 +1,7 @@
 from turtle import Turtle
 
+import main
+
 
 class Segment(Turtle):
     def __init__(self, posx, posy):
@@ -92,4 +94,5 @@ class Segment(Turtle):
                 # THE TURN WAS MADE!!!
                 # remove the turning point from segment's turning list
                 del self.turning_points[0]
+
         self.forward(20)
