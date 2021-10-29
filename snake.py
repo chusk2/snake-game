@@ -100,13 +100,39 @@ class Snake:
         #     self.pieces_position.append(i.position())
         # self.write_position(self.pieces_position)
 
+    def new_tail(self):
+        tail = self.pieces[-1]
+        posx = tail.pos()[0]
+        posy = tail.pos()[1]
+        # determine orientation
+        if tail.heading() == 0:  # going left
+            new_x = posx - 20
+            new_y = posy
+        elif tail.heading() == 180:  # going right
+            new_x = posx + 20
+            new_y = posy
+        elif tail.heading() == 90:  # going up
+            new_x = posx
+            new_y = posy - 20
+        elif tail.heading() == 270:  # going down
+            new_x = posx
+            new_y = posy + 20
+        # add the new tail at new position
+        self.pieces.append(Segment(new_x, new_y))
+        new_tail = self.pieces[-1]
+        # set heading of new tail to follow snake body
+        new_tail.setheading(tail.heading())
+        # make new_tail to turn at designed points
+        if tail.turning_points:
+            new_tail.turning_points = tail.turning_points
+
+
     def move(self):  # move the whole snake
         for index, piece in enumerate(self.pieces):
             # check if the head eats the apple
-            if index == 0:
-                if self.apple.return_position() == piece.position():
-                    print('match')
-                if self.apple.eaten_food(piece.position()):
+            if index == 0 and self.apple.eaten_food(piece.position()):
+                    print('Match')
+                    self.new_tail()
                     self.apple.move()
             piece.move_segment()
             # self.pieces_position[index] = piece.position()

@@ -92,7 +92,7 @@ class Game:
             #self.check_eaten_food()
             self.snk.move()
             self.scr.update()
-            time.sleep(0.1)
+            time.sleep(0.05)
 
     # def pause(self):
     #     if self.game_is_on:
@@ -101,7 +101,7 @@ class Game:
     #         self.game_is_on = True
 
 
-game = Game(snake_size=4, canvas_size=160, canvas_color='white')
+game = Game(snake_size=4, canvas_size=400, canvas_color='white')
 game.start()
 
 game.scr.exitonclick()
