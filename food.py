@@ -21,7 +21,7 @@ class Food(Turtle):
         self.goto(new_x, new_y)
 
     def return_position(self):
-        return self.position()
+        print(f'Apple: {self.position()}')
 
     def eaten_food(self, head_pos):
         if head_pos == self.position():

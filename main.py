@@ -1,6 +1,7 @@
 import time
 from turtle import Turtle, Screen
 from snake import Snake
+from food import Food
 
 
 class Game:
@@ -15,7 +16,8 @@ class Game:
         self.snk = Snake(snake_size, canvas_size)
         self.game_is_on = None
         self.score = 0
-        #self.food = Food(self.size)
+        self.apple = Food(self.size)
+        self.eaten = False
 
     def draw_margins(self):
         margin = Turtle()  # turtle to draw margins
@@ -32,7 +34,6 @@ class Game:
         self.scr.update()
 
     def draw_grid(self):
-        
         number_turtles = 2 * (self.size // 20)
         for i in range(number_turtles+1):  # +1 to fill the borders of grid
             x_t = Turtle()  # turtle to draw horizontal lines
@@ -44,7 +45,6 @@ class Game:
             y_t.penup()
             # starting positions
             y_t.goto(-self.size + 20 * i, -self.size)  # vertical lines
-            y_t.write(-self.size + 20 * i)
             x_t.goto(-self.size, -self.size + 20 * i)  # horizontal lines
             x_t.pendown()
             y_t.pendown()
@@ -53,12 +53,11 @@ class Game:
             y_t.goto(y_t.xcor(), self.size)
             x_t.hideturtle()
             y_t.hideturtle()
-    
         self.scr.update()
 
     def check_eaten_food(self):
         snake_head_position = self.snk.pieces[0].position()
-        if self.food.eaten_food(snake_head_position):
+        if self.apple.eaten_food(snake_head_position):
             self.score += 10
             print(f'Apple eaten! Your score is: {self.score}')
 
@@ -69,16 +68,15 @@ class Game:
         self.scr.onkeypress(lambda: self.snk.turn_snake('left'), 'Left')
         self.scr.onkeypress(lambda: self.snk.turn_snake('right'), 'Right')
         self.scr.onkeypress(self.snk.return_position, 'p')
-        self.scr.onkeypress(self.snk.apple.return_position, 'f')
-        self.scr.onkeypress(self.paused_mode, 'space')
-        # self.scr.onkeypress(self.pause, 'space')
+        self.scr.onkeypress(self.apple.return_position, 'f')
+        self.scr.onkeypress(self.pause_game, 'space')
         self.scr.listen()
 
-    def paused_mode(self):
-        self.check_eaten_food()
-        self.snk.move()
-        self.scr.update()
-        time.sleep(0.1)
+    # def paused_mode(self):
+    #     self.check_eaten_food()
+    #     self.snk.move()
+    #     self.scr.update()
+    #     time.sleep(0.1)
 
     def start(self):
         # start the game
@@ -88,20 +86,32 @@ class Game:
         self.listen_to_keys()
         self.scr.update()
 
-        while self.game_is_on:
-            #self.check_eaten_food()
-            self.snk.move()
+        while True:
+
+            if self.game_is_on:
+                # check if snake head ate the apple
+                self.snk.move_snake(self.apple)
+                if self.snk.eaten:
+                    self.apple.move()
+                    self.score += 10
+                    self.snk.eaten = False
+                    print(f'Your score is: {self.score}')
+
             self.scr.update()
-            time.sleep(0.05)
+            time.sleep(0.1)
 
-    # def pause(self):
-    #     if self.game_is_on:
-    #         self.game_is_on = False
-    #     elif not self.game_is_on:
-    #         self.game_is_on = True
+    def pause_game(self):
+        if self.game_is_on:
+            self.game_is_on = False
+            self.scr.title('Snake Game - Paused game')
+            print('Paused game')
+        elif not self.game_is_on:
+            self.game_is_on = True
+            self.scr.title('Snake Game')
+            print('Resumed game')
 
 
-game = Game(snake_size=4, canvas_size=400, canvas_color='white')
+game = Game(snake_size=4, canvas_size=400, canvas_color='black')
 game.start()
 
 game.scr.exitonclick()
