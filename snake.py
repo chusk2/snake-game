@@ -2,6 +2,7 @@ from segment import Segment
 
 
 class Snake:
+    """Docstring"""
 	def __init__(self, size, margins):
 		self.pieces = []
 		self.snake_size = size

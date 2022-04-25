@@ -2,6 +2,7 @@ from turtle import Turtle
 
 
 class Segment(Turtle):
+    """Segment"""
     def __init__(self, posx, posy):
         super().__init__()
         self.color('green', 'green')
@@ -75,6 +76,7 @@ class Segment(Turtle):
                 self.setheading(0)
 
     def move_segment(self):
+        """movement"""
         # if there are rotations still to be carried out
 
         if self.turning_points:

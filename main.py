@@ -4,6 +4,7 @@ from snake import Snake
 
 
 class Game:
+    """Game"""
     def __init__(self, snake_size=3, canvas_size=300, canvas_color='black'):
         # create a screen
         self.scr = Screen()
@@ -17,6 +18,7 @@ class Game:
         self.game_is_on = None
 
     def set_margins(self):
+        """Set the margins of canvas"""
         # Dimensions of canvas
         max_posx = self.size - 10
         min_posx = - self.size + 10
@@ -25,6 +27,7 @@ class Game:
         return [min_posx, min_posy, max_posx, max_posy]
 
     def draw_margins(self):
+        """Draw lines using margin values"""
         margin = Turtle()  # turtle to draw margins
         margin.pencolor('blue')
         margin.pensize(2)
@@ -39,7 +42,7 @@ class Game:
         self.scr.update()
 
     def draw_grid(self):
-        
+        """Draw the lines of the grid"""
         number_turtles = 2 * self.size // 20
         for i in range(number_turtles+1):  # +1 to fill the borders of grid
             x_t = Turtle()  # turtle to draw horizontal lines
@@ -63,6 +66,7 @@ class Game:
         self.scr.update()
     
     def listen_to_keys(self):
+        """Define the event listeners"""
         # Event listeners
         self.scr.onkeypress(lambda: self.snk.turn_snake('up'), 'Up')
         self.scr.onkeypress(lambda: self.snk.turn_snake('down'), 'Down')
@@ -74,6 +78,7 @@ class Game:
         self.scr.listen()
 
     def start(self):
+        """Start the game"""
         # start the game
         self.game_is_on = True
         self.draw_margins()
@@ -96,4 +101,3 @@ game = Game(snake_size=4, canvas_size=300, canvas_color='white')
 game.start()
 
 game.scr.exitonclick()
-
